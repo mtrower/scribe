@@ -21,8 +21,6 @@ future review.
    * User accounts/roles: assign rights profiles to various users
 * Database (PostgreSQL)
     * Store users and instrumentation data.
-* Web Services or APIs
-    * slack APIs
 * Logging
     * General application state (milestones, error reporting, etc)
 * Unit Testing
