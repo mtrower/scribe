@@ -8,7 +8,7 @@ a misbehaving system can be an involved process spanning a great many tools.
 This is especially true of headless server systems.  By the time a system can
 be fully instrumented, the trouble may well have passed.  Worse yet is the
 scenario where the trouble has passed before you even begin - in this case
-conventioal instrumentation tools are of little to no value.
+conventional instrumentation tools are of little to no value.
 
 Scribe aims to aggregate essential system statistics and instrumentation in
 one place, providing views from multiple depths, optionally across multiple
