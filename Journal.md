@@ -56,3 +56,22 @@ Completed:
     After that, I spent some time drawing up a database description, and
     implementing it on my postgres server, along with some supporting roles.
     I also drew up basic wireframes for two pages of the website.
+
+3/30/16
+3/31/16
+    Spent a lot of time learning about and implementing Maven.  It's supposed
+    to make things easier, but I'm worried about whether the boilerplate and
+    other overhead will be worth it - especially with the reduction in
+    flexibility.  I suppose time will tell.
+
+4/10/16
+4/11/16
+    Maven has been working out. It isn't fast, but at least it hasn't broken.
+    Maintenance cost has been low. Dependency management should prove a boon.
+    Already I can see flexibility issues - the Tomcat plugin does not support
+    multiple servers. Fortunately it's simple enough to type a curl command.
+
+    Jackson has its perks, but sometimes it seems simpler to just use
+    JsonGenerator. The generator feels almost like writing native JSON.  The
+    syntax carries some small additional bulk, but that's Java for you. People
+    don't come to this language for sleek lightweight syntax.
