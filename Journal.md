@@ -14,12 +14,16 @@ Completed:
 Completed:
  * Debugging RVM; will document later for ExC1
 
+### Week 2
+
 1/26/2016
 Completed:
  * Created this repository 
  * Wrote the problem statement
  * Started documenting the project plan
  * Began listing technologies and how they fit in this project
+
+### Week 4
 
 2/09/16
 Completed:
@@ -33,58 +37,70 @@ Completed:
  * Finish SantaInAnElevator
  * Work on bringing various course files up to date
 
+### Week 5
+
 2/17/16
-    Did some research on Ant vs Make. I'm sticking with Make for now.  XML has
-    never suited me, and it looks as though some of the major shortcomings
-    I was seeing can be overcome without much hackery. I spent some time
-    working on that, which did require improving my knowlege of Makefile syntax
-    and builtins. The resulting file could use some love, but will work for now.
 
-    Next, I gave some thought as to how I wanted to handle database and web
-    server deployment across a variety of development and production
-    environments. For the database, I settled on using my primary database
-    server for all environments, with one database for production and one for
-    testing - this will always be accessible behind my firewall (where the
-    relevant web servers live), from any machine, so I won't need to worry
-    about whether the contents of my databases are current. For the web server,
-    I decided that the same server environment and TomEE+ instance could serve
-    both production and testing by using different deployment roots. This may
-    not be best practice for actual production, but for a school project it
-    seems fine. The web server runs in a zone that is dedicated to this class
-    anyway.
+Did some research on Ant vs Make. I'm sticking with Make for now.  XML has
+never suited me, and it looks as though some of the major shortcomings
+I was seeing can be overcome without much hackery. I spent some time
+working on that, which did require improving my knowlege of Makefile syntax
+and builtins. The resulting file could use some love, but will work for now.
 
-    After that, I spent some time drawing up a database description, and
-    implementing it on my postgres server, along with some supporting roles.
-    I also drew up basic wireframes for two pages of the website.
+Next, I gave some thought as to how I wanted to handle database and web
+server deployment across a variety of development and production
+environments. For the database, I settled on using my primary database
+server for all environments, with one database for production and one for
+testing - this will always be accessible behind my firewall (where the
+relevant web servers live), from any machine, so I won't need to worry
+about whether the contents of my databases are current. For the web server,
+I decided that the same server environment and TomEE+ instance could serve
+both production and testing by using different deployment roots. This may
+not be best practice for actual production, but for a school project it
+seems fine. The web server runs in a zone that is dedicated to this class
+anyway.
+
+After that, I spent some time drawing up a database description, and
+implementing it on my postgres server, along with some supporting roles.
+I also drew up basic wireframes for two pages of the website.
+
+### Week 10
 
 3/30/16
 3/31/16
-    Spent a lot of time learning about and implementing Maven.  It's supposed
-    to make things easier, but I'm worried about whether the boilerplate and
-    other overhead will be worth it - especially with the reduction in
-    flexibility.  I suppose time will tell.
+
+Spent a lot of time learning about and implementing Maven.  It's supposed
+to make things easier, but I'm worried about whether the boilerplate and
+other overhead will be worth it - especially with the reduction in
+flexibility.  I suppose time will tell.
+
+### Week 12
 
 4/10/16
 4/11/16
-    Maven has been working out. It isn't fast, but at least it hasn't broken.
-    Maintenance cost has been low. Dependency management should prove a boon.
-    Already I can see flexibility issues - the Tomcat plugin does not support
-    multiple servers. Fortunately it's simple enough to type a curl command.
 
-    Jackson has its perks, but sometimes it seems simpler to just use
-    JsonGenerator. The generator feels almost like writing native JSON.  The
-    syntax carries some small additional bulk, but that's Java for you. People
-    don't come to this language for sleek lightweight syntax.
+Maven has been working out. It isn't fast, but at least it hasn't broken.
+Maintenance cost has been low. Dependency management should prove a boon.
+Already I can see flexibility issues - the Tomcat plugin does not support
+multiple servers. Fortunately it's simple enough to type a curl command.
+
+Jackson has its perks, but sometimes it seems simpler to just use
+JsonGenerator. The generator feels almost like writing native JSON.  The
+syntax carries some small additional bulk, but that's Java for you. People
+don't come to this language for sleek lightweight syntax.
+
+### Week 13
 
 4/16/16
-    Alright, Maven is serving me well.
 
-    Spent some time researching various topics - git subproject structure, Java
-    threading, JUnit testing (had some version incompatibilities here, and
-    documentation on necessary imports could be better).  That's a perk I can
-    add at a later date.  Threading is far easier than I expected.  I suppose
-    Java *was* considered a major advancement in productivity in it's day.
-    
-    The plugin model isn't going to be too bad, though I think I'll hold off on
-    dynamic loading for now.  Keeping to basic functionality, *scribe* ought to
-    be finishable in another day's work.
+Alright, Maven is serving me well.
+
+Spent some time researching various topics - git subproject structure, Java
+threading, JUnit testing (had some version incompatibilities here, and
+documentation on necessary imports could be better).  That's a perk I can
+add at a later date.  Threading is far easier than I expected.  I suppose
+Java *was* considered a major advancement in productivity in it's day.
+
+The plugin model isn't going to be too bad, though I think I'll hold off on
+dynamic loading for now.  Keeping to basic functionality, *scribe* ought to
+be finishable in another day's work.
