@@ -75,3 +75,16 @@ Completed:
     JsonGenerator. The generator feels almost like writing native JSON.  The
     syntax carries some small additional bulk, but that's Java for you. People
     don't come to this language for sleek lightweight syntax.
+
+4/16/16
+    Alright, Maven is serving me well.
+
+    Spent some time researching various topics - git subproject structure, Java
+    threading, JUnit testing (had some version incompatibilities here, and
+    documentation on necessary imports could be better).  That's a perk I can
+    add at a later date.  Threading is far easier than I expected.  I suppose
+    Java *was* considered a major advancement in productivity in it's day.
+    
+    The plugin model isn't going to be too bad, though I think I'll hold off on
+    dynamic loading for now.  Keeping to basic functionality, *scribe* ought to
+    be finishable in another day's work.

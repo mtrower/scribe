@@ -15,4 +15,5 @@
 | 3/31/16 | Group project, complete Maven structure | 4 |   | 
 | 4/10/16 | Group project, Fixup compilation and project structure | 2 |   | 
 | 4/11/16 | Group project, Implement controller and various model algorithms/miscellany | 3.5 |   | 
+| 4/16/16 | Initialize Maven, begin altering project structure, rough out *scribe* architecture with plugin model.  Provide one dummy plugin and one rough plugin.  Implement threading model. | 6.5 |   | 
 |   |   |   |   |  
