@@ -35,7 +35,7 @@ public class VMStatParser {
         return stats[index];
     }
 
-    public ArrayList<Integer> getStats() {
-        return new ArrayList<Integer>(Arrays.asList(stats));
+    public Integer[] getStats() {
+        return stats.clone();
     }
 }

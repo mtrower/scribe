@@ -3,7 +3,6 @@ package net.blackshard.clarity.scribe;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
-import java.util.List;
 import org.junit.Rule;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +53,7 @@ public class VMStatParserTest {
     @Test public void fieldsAreSetProperly() {
         parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 1 97");
 
-        List<Integer> pFields = parser.getStats();
+        Integer[] pFields = parser.getStats();
 
         Integer[] fields = new Integer[22];
         fields[0]  = 10255984;
@@ -67,7 +66,7 @@ public class VMStatParserTest {
         fields[19] = 1;     fields[20] = 1;     fields[21] = 97;
 
         for (int i = 0; i < 22; i++)
-            assertThat(pFields.get(i), equalTo(fields[i]));
+            assertThat(pFields[i], equalTo(fields[i]));
 
         assertThat(parser.getStat(0), equalTo(10255984));
         assertThat(parser.getStat(21), equalTo(97));
