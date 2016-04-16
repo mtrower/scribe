@@ -11,10 +11,10 @@ import java.util.Arrays;
  */
 public class VMStatParser {
     private final int VMSTAT_FIELD_COUNT = 22;
-    private int[] stats;
+    private Integer[] stats;
 
     public VMStatParser() {
-        stats = new int[VMSTAT_FIELD_COUNT];
+        stats = new Integer[VMSTAT_FIELD_COUNT];
     }
 
     public void parse(String line) throws IllegalArgumentException {
@@ -31,11 +31,11 @@ public class VMStatParser {
             stats[i] = Integer.valueOf(fields[i]);
     }
 
-    public int getStat(int index) {
+    public Integer getStat(int index) {
         return stats[index];
     }
 
-    public ArrayList getStatList() {
-        return new ArrayList(Arrays.asList(stats));
+    public ArrayList<Integer> getStats() {
+        return new ArrayList<Integer>(Arrays.asList(stats));
     }
 }
