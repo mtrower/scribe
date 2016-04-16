@@ -6,15 +6,18 @@ package net.blackshard.clarity.scribe;
  * 
  * Scribblet to log basic CPU activity.
  */
-public class CPUScribblet implements Scribblet {
-    /*
-     *  Constructor for CPUScribblet
-     */
-    public CPUScribblet() {
+public class CPUScribblet implements Runnable {
 
+    public CPUScribblet() {
+        System.out.println("CPU Scribblet: starting up!");
     }
 
     public void run() {
-        System.out.println("CPU Scribblet starting up!");
+       for (int i = 0; i < 5; i++) {
+           System.out.println("CPU Scribblet: tick");
+
+           try { Thread.sleep(1000); }
+           catch (InterruptedException ie) { return; }
+       }
     }
 }

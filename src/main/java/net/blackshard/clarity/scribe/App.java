@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Main driver class for Scribe.  Loads up scribblets and runs them, asynchronously.
  */
 public class App {
-    private static List<Scribblet> scribblets;
+    private static List<Runnable> scribblets;
 
     static {
         scribblets = new ArrayList();
@@ -21,7 +21,7 @@ public class App {
     public static void main( String[] args ) {
         System.out.println( "Hello World!" );
 
-        for (Scribblet s: scribblets)
-            s.run();
+        for (Runnable scribblet: scribblets)
+            (new Thread(scribblet)).start();
     }
 }
