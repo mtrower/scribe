@@ -51,10 +51,6 @@ public class VMStatParserTest {
     }
 
     @Test public void fieldsAreSetProperly() {
-        parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 1 97");
-
-        Integer[] pFields = parser.getStats();
-
         Integer[] fields = new Integer[22];
         fields[0]  = 10255984;
         fields[1]  = 0;     fields[2]  = 0;     fields[3]  = 10817544;
@@ -63,13 +59,32 @@ public class VMStatParserTest {
         fields[10] = 0;     fields[11] = 824;   fields[12] = 35;
         fields[13] = 0;     fields[14] = 36;    fields[15] = 0;
         fields[16] = 2629;  fields[17] = 68237; fields[18] = 2931;
-        fields[19] = 1;     fields[20] = 1;     fields[21] = 97;
+        fields[19] = 1;     fields[20] = 2;     fields[21] = 97;
+
+        parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 2 97");
+        Integer[] pFields = parser.getStats();
 
         for (int i = 0; i < 22; i++)
             assertThat(pFields[i], equalTo(fields[i]));
 
+    }
+
+    @Test public void fieldIndicesFunction() {
+        parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 2 97");
+
         assertThat(parser.getStat(0), equalTo(10255984));
         assertThat(parser.getStat(21), equalTo(97));
+    }
 
+    @Test public void fieldEnumsFunction() {
+        parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 2 97");
+        Integer[] fields = parser.getStats(new VMStatFields[] {
+                                             VMStatFields.CPU_USER
+                                           , VMStatFields.CPU_SYS
+                                           , VMStatFields.CPU_IDLE });
+
+        assertThat(fields[0], equalTo(1));
+        assertThat(fields[1], equalTo(2));
+        assertThat(fields[2], equalTo(97));
     }
 }

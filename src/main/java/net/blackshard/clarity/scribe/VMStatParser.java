@@ -35,7 +35,20 @@ public class VMStatParser {
         return stats[index];
     }
 
+    public Integer getStat(VMStatFields field) {
+        return stats[field.ordinal()];
+    }
+
     public Integer[] getStats() {
         return stats.clone();
+    }
+
+    public Integer[] getStats(VMStatFields[] fields) {
+        Integer[] statList = new Integer[fields.length];
+
+        for (int i = 0; i < fields.length; i++)
+            statList[i] = stats[fields[i].ordinal()];
+
+        return statList;
     }
 }
