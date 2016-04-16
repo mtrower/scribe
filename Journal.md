@@ -104,3 +104,5 @@ Java *was* considered a major advancement in productivity in it's day.
 The plugin model isn't going to be too bad, though I think I'll hold off on
 dynamic loading for now.  Keeping to basic functionality, *scribe* ought to
 be finishable in another day's work.
+
+As a side note, Cobertura was painless to implement using Maven.
