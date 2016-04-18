@@ -15,7 +15,7 @@ public class App {
     static {
         scribblets = new ArrayList();
         scribblets.add(new CPUScribblet());
-        scribblets.add(new RAMScribblet());
+        scribblets.add(new MemScribblet());
     }
 
     public static void main( String[] args ) {
