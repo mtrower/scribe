@@ -1,6 +1,7 @@
 package net.blackshard.clarity.scribe;
 
 import java.io.*;
+import java.util.Map;
 
 /**
  * @author Matthew R. Trower
@@ -10,14 +11,13 @@ import java.io.*;
  */
 public class CPUScribblet implements Runnable {
     String name = "CPU Scribblet";
-    Integer[] stats;
+    Map<VMStatField, Integer> stats;
 
     Process proc;
     BufferedReader pin;
     VMStatParser parser;
 
     public CPUScribblet() {
-        stats = new Integer[3];
         parser = new VMStatParser();
     }
 
@@ -71,16 +71,22 @@ public class CPUScribblet implements Runnable {
         if (!line.isEmpty()) {
             parser.parse(line);
 
-            stats = parser.getStats(new VMStatFields[] {
-                  VMStatFields.CPU_USER
-                , VMStatFields.CPU_SYS
-                , VMStatFields.CPU_IDLE
+            stats = parser.getStats(new VMStatField[] {
+                  VMStatField.CPU_USER
+                , VMStatField.CPU_SYS
+                , VMStatField.CPU_IDLE
             });
         }
     }
 
     private void writeStats() {
-        System.out.println(String.format("%s: user %d \tsystem %d \t idle %d", 
-                                            name, stats[0], stats[1], stats[2]));
+        if (stats != null)
+            System.out.println(
+                    String.format("%s: user %d \tsystem %d \t idle %d"
+                                    , name
+                                    , stats.get(VMStatField.CPU_USER)
+                                    , stats.get(VMStatField.CPU_SYS)
+                                    , stats.get(VMStatField.CPU_IDLE)
+            ));
     }
 }

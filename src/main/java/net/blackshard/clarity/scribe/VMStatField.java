@@ -2,9 +2,9 @@ package net.blackshard.clarity.scribe;
 
 /**
  * @author Matthew R. Trower
- * enum VMStatFields
+ * enum VMStatField
  */
-public enum VMStatFields {
+public enum VMStatField {
     KTHREAD_RUN, KTHREAD_BLOCK, KTHREAD_WAIT,
     MEM_SWAP, MEM_FREE,
     PAGE_RECLAIM, PAGE_MINOR_FAULT, PAGE_IN, PAGE_OUT,

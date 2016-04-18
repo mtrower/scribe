@@ -1,7 +1,6 @@
 package net.blackshard.clarity.scribe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * @author Matthew R. Trower
@@ -10,11 +9,12 @@ import java.util.Arrays;
  * Tools for parsing vmstat output
  */
 public class VMStatParser {
-    private final int VMSTAT_FIELD_COUNT = 22;
-    private Integer[] stats;
+    private HashMap<VMStatField, Integer> stats;
+    private VMStatField fieldNames[];
 
     public VMStatParser() {
-        stats = new Integer[VMSTAT_FIELD_COUNT];
+        stats = new HashMap<VMStatField, Integer>();
+        fieldNames = VMStatField.values();
     }
 
     public void parse(String line) throws IllegalArgumentException {
@@ -23,32 +23,28 @@ public class VMStatParser {
 
         String[] fields = line.trim().split("\\s+");
 
-        if (fields.length != VMSTAT_FIELD_COUNT)
+        if (fields.length != fieldNames.length)
             throw new IllegalArgumentException(
                     "Incorrect field count: " + fields.length);
 
-        for (int i = 0; i < VMSTAT_FIELD_COUNT; i++)
-            stats[i] = Integer.valueOf(fields[i]);
+        for (int i = 0; i < fieldNames.length; i++)
+            stats.put(fieldNames[i], Integer.valueOf(fields[i]));
     }
 
-    public Integer getStat(int index) {
-        return stats[index];
+    public Integer getStat(VMStatField field) {
+        return stats.get(field);
     }
 
-    public Integer getStat(VMStatFields field) {
-        return stats[field.ordinal()];
+    public HashMap<VMStatField, Integer> getStats() {
+        return new HashMap<VMStatField, Integer>(stats);
     }
 
-    public Integer[] getStats() {
-        return stats.clone();
-    }
-
-    public Integer[] getStats(VMStatFields[] fields) {
-        Integer[] statList = new Integer[fields.length];
+    public HashMap<VMStatField, Integer> getStats(VMStatField[] fields) {
+        HashMap<VMStatField, Integer> pkg = new HashMap<VMStatField, Integer>();
 
         for (int i = 0; i < fields.length; i++)
-            statList[i] = stats[fields[i].ordinal()];
+            pkg.put(fields[i], stats.get(fields[i]));
 
-        return statList;
+        return pkg;
     }
 }

@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Map;
+
 /**
  * Unit test for VMStatParser.
  */
@@ -51,40 +53,49 @@ public class VMStatParserTest {
     }
 
     @Test public void fieldsAreSetProperly() {
-        Integer[] fields = new Integer[22];
-        fields[0]  = 10255984;
-        fields[1]  = 0;     fields[2]  = 0;     fields[3]  = 10817544;
-        fields[4]  = 0;     fields[5]  = 303;   fields[6]  = 1457;
-        fields[7]  = 23;    fields[8]  = 0;     fields[9]  = 0;
-        fields[10] = 0;     fields[11] = 824;   fields[12] = 35;
-        fields[13] = 0;     fields[14] = 36;    fields[15] = 0;
-        fields[16] = 2629;  fields[17] = 68237; fields[18] = 2931;
-        fields[19] = 1;     fields[20] = 2;     fields[21] = 97;
-
         parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 2 97");
-        Integer[] pFields = parser.getStats();
+        Map<VMStatField, Integer> parsed = parser.getStats();
 
-        for (int i = 0; i < 22; i++)
-            assertThat(pFields[i], equalTo(fields[i]));
-
+        assertThat(parsed.get(VMStatField.KTHREAD_RUN),    equalTo(10255984));
+        assertThat(parsed.get(VMStatField.KTHREAD_BLOCK),  equalTo(0));
+        assertThat(parsed.get(VMStatField.KTHREAD_WAIT),   equalTo(0));
+        assertThat(parsed.get(VMStatField.MEM_SWAP),       equalTo(10817544));
+        assertThat(parsed.get(VMStatField.MEM_FREE),       equalTo(0));
+        assertThat(parsed.get(VMStatField.PAGE_RECLAIM),   equalTo(303));
+        assertThat(parsed.get(VMStatField.PAGE_MINOR_FAULT), equalTo(1457));
+        assertThat(parsed.get(VMStatField.PAGE_IN),        equalTo(23));
+        assertThat(parsed.get(VMStatField.PAGE_OUT),       equalTo(0));
+        assertThat(parsed.get(VMStatField.PAGE_FREED),     equalTo(0));
+        assertThat(parsed.get(VMStatField.PAGE_SHORTFALL), equalTo(0));
+        assertThat(parsed.get(VMStatField.PAGE_SCAN),      equalTo(824));
+        assertThat(parsed.get(VMStatField.DISK0),          equalTo(35));
+        assertThat(parsed.get(VMStatField.DISK1),          equalTo(0));
+        assertThat(parsed.get(VMStatField.DISK2),          equalTo(36));
+        assertThat(parsed.get(VMStatField.DISK3),          equalTo(0));
+        assertThat(parsed.get(VMStatField.FAULT_IN),       equalTo(2629));
+        assertThat(parsed.get(VMStatField.FAULT_SYSCALL),  equalTo(68237));
+        assertThat(parsed.get(VMStatField.FAULT_CTX),      equalTo(2931));
+        assertThat(parsed.get(VMStatField.CPU_USER),       equalTo(1));
+        assertThat(parsed.get(VMStatField.CPU_SYS),        equalTo(2));
+        assertThat(parsed.get(VMStatField.CPU_IDLE ),      equalTo(97));
     }
 
     @Test public void fieldIndicesFunction() {
         parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 2 97");
 
-        assertThat(parser.getStat(0), equalTo(10255984));
-        assertThat(parser.getStat(21), equalTo(97));
+        assertThat(parser.getStat(VMStatField.KTHREAD_RUN), equalTo(10255984));
+        assertThat(parser.getStat(VMStatField.CPU_IDLE), equalTo(97));
     }
 
     @Test public void fieldEnumsFunction() {
         parser.parse("10255984 0 0 10817544 0 303 1457 23 0 0 0 824 35 -0 36 -0 2629 68237 2931 1 2 97");
-        Integer[] fields = parser.getStats(new VMStatFields[] {
-                                             VMStatFields.CPU_USER
-                                           , VMStatFields.CPU_SYS
-                                           , VMStatFields.CPU_IDLE });
+        Map<VMStatField, Integer> fields = parser.getStats(new VMStatField[] {
+                                             VMStatField.CPU_USER
+                                           , VMStatField.CPU_SYS
+                                           , VMStatField.CPU_IDLE });
 
-        assertThat(fields[0], equalTo(1));
-        assertThat(fields[1], equalTo(2));
-        assertThat(fields[2], equalTo(97));
+        assertThat(fields.get(VMStatField.CPU_USER), equalTo(1));
+        assertThat(fields.get(VMStatField.CPU_SYS), equalTo(2));
+        assertThat(fields.get(VMStatField.CPU_IDLE), equalTo(97));
     }
 }
