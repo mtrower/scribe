@@ -10,14 +10,14 @@ import java.io.*;
  */
 public class CPUScribblet implements Runnable {
     String name = "CPU Scribblet";
-    int[] stats;
+    Integer[] stats;
 
     Process proc;
     BufferedReader pin;
     VMStatParser parser;
 
     public CPUScribblet() {
-        stats = new int[3];
+        stats = new Integer[3];
         parser = new VMStatParser();
     }
 
@@ -27,7 +27,7 @@ public class CPUScribblet implements Runnable {
         initializeGatherer();
 
         for (int i = 0; i < 5; i++) {
-            //System.out.println("CPU Scribblet: tick");
+            //System.out.println(name + ": tick");
 
             gatherStats();
             writeStats();
@@ -71,8 +71,11 @@ public class CPUScribblet implements Runnable {
         if (!line.isEmpty()) {
             parser.parse(line);
 
-            for (int i = 0; i < 3; i++)
-                stats[i] = Integer.valueOf(parser.getStat(i + 19));
+            stats = parser.getStats(new VMStatFields[] {
+                  VMStatFields.CPU_USER
+                , VMStatFields.CPU_SYS
+                , VMStatFields.CPU_IDLE
+            });
         }
     }
 
