@@ -38,17 +38,17 @@ public class CPUScribblet implements Runnable {
             writeStats();
 
             try { Thread.sleep(1000); }
-            catch (InterruptedException ie) {
-                try {
-                    pin.close();
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                return;
-            }
+            catch (InterruptedException ie) { break; }
         }
 
         System.out.println(name + ": shutting down!");
+
+        cleanUpGatherer();
+    }
+
+    private void cleanUpGatherer() {
+        try { pin.close(); }
+        catch (IOException ioe) { ioe.printStackTrace(); }
     }
 
     private void initializeGatherer() {
