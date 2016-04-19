@@ -17,21 +17,21 @@ public class App {
     private static List<Runnable> scribblets;
 
     static {
-        log.trace("Driver: initializing...");
+        log.info("Driver: initializing...");
 
         scribblets = new ArrayList();
         scribblets.add(new CPUScribblet());
         scribblets.add(new MemScribblet());
 
-        log.trace("Driver: initialization complete");
+        log.info("Driver: initialization complete");
     }
 
     public static void main( String[] args ) {
-        log.trace("Driver: launching scribblets...");
+        log.info("Driver: launching scribblets...");
 
         for (Runnable scribblet: scribblets)
             (new Thread(scribblet)).start();
 
-        log.trace("Driver: all scribblets launched");
+        log.info("Driver: all scribblets launched");
     }
 }

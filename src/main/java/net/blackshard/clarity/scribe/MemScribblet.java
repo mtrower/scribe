@@ -27,12 +27,12 @@ public class MemScribblet implements Runnable {
     }
 
     public void run() {
-        System.out.println(name + ": starting up!");
+        log.info(name + ": starting up!");
 
         initializeGatherer();
 
         for (int i = 0; i < 5; i++) {
-            //System.out.println(name + ": tick");
+            log.trace(name + ": tick");
 
             gatherStats();
             writeStats();
@@ -43,7 +43,7 @@ public class MemScribblet implements Runnable {
             }
         }
 
-        System.out.println(name + ": shutting down!");
+        log.info(name + ": shutting down!");
 
         cleanUpGatherer();
     }
@@ -90,9 +90,7 @@ public class MemScribblet implements Runnable {
 
     private void writeStats() {
         if (stats != null)
-            System.out.println(
-                    String.format("%s: total swap %d \tfree %d"
-                                    , name
+            log.debug(String.format("%s: total swap %d \tfree %d", name
                                     , stats.get(VMStatField.MEM_SWAP)
                                     , stats.get(VMStatField.MEM_FREE)
             ));

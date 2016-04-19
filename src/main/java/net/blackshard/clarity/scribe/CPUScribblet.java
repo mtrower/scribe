@@ -27,12 +27,12 @@ public class CPUScribblet implements Runnable {
     }
 
     public void run() {
-        System.out.println(name + ": starting up!");
+        log.info(name + ": starting up!");
 
         initializeGatherer();
 
         for (int i = 0; i < 5; i++) {
-            //System.out.println(name + ": tick");
+            log.trace(name + ": tick");
 
             gatherStats();
             writeStats();
@@ -41,7 +41,7 @@ public class CPUScribblet implements Runnable {
             catch (InterruptedException ie) { break; }
         }
 
-        System.out.println(name + ": shutting down!");
+        log.info(name + ": shutting down!");
 
         cleanUpGatherer();
     }
@@ -86,9 +86,7 @@ public class CPUScribblet implements Runnable {
 
     private void writeStats() {
         if (stats != null)
-            System.out.println(
-                    String.format("%s: user %d \tsystem %d \t idle %d"
-                                    , name
+            log.debug(String.format("%s: user %d \tsystem %d \t idle %d", name
                                     , stats.get(VMStatField.CPU_USER)
                                     , stats.get(VMStatField.CPU_SYS)
                                     , stats.get(VMStatField.CPU_IDLE)
