@@ -2,6 +2,9 @@ package net.blackshard.clarity.scribe;
 
 import java.util.HashMap;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 /**
  * @author Matthew R. Trower
  * class VMStatParser
@@ -9,6 +12,8 @@ import java.util.HashMap;
  * Tools for parsing vmstat output
  */
 public class VMStatParser {
+    private static final Logger log = LogManager.getLogger("net.blackshard.clarity.scribe");
+
     private HashMap<VMStatField, Integer> stats;
     private VMStatField fieldNames[];
 

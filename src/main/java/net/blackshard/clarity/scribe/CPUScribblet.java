@@ -3,6 +3,9 @@ package net.blackshard.clarity.scribe;
 import java.io.*;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 /**
  * @author Matthew R. Trower
  * class CPUScribblet
@@ -10,6 +13,8 @@ import java.util.Map;
  * Scribblet to log basic CPU activity.
  */
 public class CPUScribblet implements Runnable {
+    private static final Logger log = LogManager.getLogger("net.blackshard.clarity.scribe");
+
     String name = "CPU Scribblet";
     Map<VMStatField, Integer> stats;
 
