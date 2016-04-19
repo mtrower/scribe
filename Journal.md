@@ -89,8 +89,6 @@ JsonGenerator. The generator feels almost like writing native JSON.  The
 syntax carries some small additional bulk, but that's Java for you. People
 don't come to this language for sleek lightweight syntax.
 
-### Week 13
-
 4/16/16
 
 Alright, Maven is serving me well.
@@ -106,3 +104,25 @@ dynamic loading for now.  Keeping to basic functionality, *scribe* ought to
 be finishable in another day's work.
 
 As a side note, Cobertura was painless to implement using Maven.
+
+### Week 13
+
+4/18/16
+
+Maven helped me discover a bug today.  It wasn't anything Maven was intended to
+do, so this is anecdotal rather than any sort of recommendation.  Maven
+exec:java goal waits for all threads to finish (while CLI java invocation exits
+as soon as the main thread is finished).  This eventually led me to discover
+that I wasn't closing some process streams.
+
+Log4j2 seems a complicated beast.  I'm only half sure what much of the config
+does.  Or rather, it makes a reasonable amount of sense when I look at it, but
+not enough sense for me to adjust it to my needs.
+
+I moved a lot of code out into new classes today.  This cut down on code
+duplication and greatly aided unit testing.  Code coverage roughly doubled.
+I have some thoughts on further reducing duplicate code through inheritance,
+but it will depend on the Java implementation. 
+
+It seems I need to perform a clean before running Cobertura.  Failing to do so
+results in inflated line numbers in code paths.
