@@ -61,11 +61,10 @@ public class CPUScribblet implements Runnable {
     }
 
     private void writeStats() throws IOException {
-        if (stats != null)
-            log.debug(String.format("%s: user %d \tsystem %d \t idle %d", name
-                                    , stats.get(VMStatField.CPU_USER)
-                                    , stats.get(VMStatField.CPU_SYS)
-                                    , stats.get(VMStatField.CPU_IDLE)
-            ));
+        log.debug(String.format("%s: user %d \tsystem %d \t idle %d", name
+                                , stats.get(VMStatField.CPU_USER)
+                                , stats.get(VMStatField.CPU_SYS)
+                                , stats.get(VMStatField.CPU_IDLE)
+        ));
     }
 }

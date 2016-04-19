@@ -60,10 +60,9 @@ public class MemScribblet implements Runnable {
     }
 
     private void writeStats() throws IOException {
-        if (stats != null)
-            log.debug(String.format("%s: total swap %d \tfree %d", name
-                                    , stats.get(VMStatField.MEM_SWAP)
-                                    , stats.get(VMStatField.MEM_FREE)
-            ));
+        log.debug(String.format("%s: total swap %d \tfree %d", name
+                                , stats.get(VMStatField.MEM_SWAP)
+                                , stats.get(VMStatField.MEM_FREE)
+        ));
     }
 }
