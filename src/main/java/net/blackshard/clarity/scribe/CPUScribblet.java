@@ -13,78 +13,54 @@ import org.apache.logging.log4j.LogManager;
  * Scribblet to log basic CPU activity.
  */
 public class CPUScribblet implements Runnable {
-    private static final Logger log = LogManager.getLogger("net.blackshard.clarity.scribe");
+    private static final Logger log
+            = LogManager.getLogger("net.blackshard.clarity.scribe");
 
     String name = "CPU Scribblet";
     Map<VMStatField, Integer> stats;
 
-    Process proc;
-    BufferedReader pin;
+    Gatherer gatherer;
     VMStatParser parser;
 
     public CPUScribblet() {
+        gatherer = new VMStatGatherer();
         parser = new VMStatParser();
     }
 
     public void run() {
         log.info(name + ": starting up!");
 
-        initializeGatherer();
+        try { 
+            gatherer.open();
 
-        for (int i = 0; i < 5; i++) {
-            log.trace(name + ": tick");
+            for (int i = 0; i < 5; i++) {
+                log.trace(name + ": tick");
 
-            gatherStats();
-            writeStats();
+                gatherStats();
+                writeStats();
 
-            try { Thread.sleep(1000); }
-            catch (InterruptedException ie) { break; }
-        }
+                Thread.sleep(1000);
+            } 
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (InterruptedException ie) { }
 
         log.info(name + ": shutting down!");
 
-        cleanUpGatherer();
+        gatherer.close();
     }
 
-    private void cleanUpGatherer() {
-        try { pin.close(); }
-        catch (IOException ioe) { ioe.printStackTrace(); }
+    private void gatherStats() throws IOException {
+        parser.parse(gatherer.read());
+
+        stats = parser.getStats(new VMStatField[] {
+            VMStatField.CPU_USER
+            , VMStatField.CPU_SYS
+            , VMStatField.CPU_IDLE
+        });
     }
 
-    private void initializeGatherer() {
-        try {
-            proc = Runtime.getRuntime().exec("vmstat 1");
-            pin = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-            for (int i = 0; i < 3; i++)
-                pin.readLine();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
-    private void gatherStats() {
-        String line;
-
-        try {
-            line = pin.readLine();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return;
-        }
-
-        if (!line.isEmpty()) {
-            parser.parse(line);
-
-            stats = parser.getStats(new VMStatField[] {
-                  VMStatField.CPU_USER
-                , VMStatField.CPU_SYS
-                , VMStatField.CPU_IDLE
-            });
-        }
-    }
-
-    private void writeStats() {
+    private void writeStats() throws IOException {
         if (stats != null)
             log.debug(String.format("%s: user %d \tsystem %d \t idle %d", name
                                     , stats.get(VMStatField.CPU_USER)
