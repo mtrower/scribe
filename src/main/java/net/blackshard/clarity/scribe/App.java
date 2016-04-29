@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
  * Main driver class for Scribe.  Loads up scribblets and runs them, asynchronously.
  */
 public class App {
-    private static final Logger log = LogManager.getLogger("net.blackshard.clarity.scribe");
+    private static final Logger log = LogManager.getLogger(App.class);
     private static List<Runnable> scribblets;
 
     static {

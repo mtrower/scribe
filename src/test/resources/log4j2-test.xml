@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" strict="true" name="ScribeTest">
+    <Properties>
+        <Property name="logdir">target</Property>
+    </Properties>
+    <Appenders>
+        <Appender type="Console" name="STDOUT" target="SYSTEM_OUT">
+            <Layout type="PatternLayout"
+                    pattern="%d %-4r [%t] %-5p %c %x - %m%n" />
+        </Appender>
+        <Appender type="File" name="FILE" append="false"
+                fileName="${logdir}/scribe-test.log">
+            <Layout type="PatternLayout" pattern="%d %p %m%n" />
+        </Appender>
+        <!--
+        <Appender type="File" name="FILETRACE" append="false"
+                fileName="${logdir}/scribe-test.log">
+            <Layout type="PatternLayout" pattern="%d %p %l [%t] %m%n" />
+        </Appender>
+        -->
+    </Appenders>
+    <Loggers>
+        <Logger name="net.blackshard.clarity" level="debug" />
+        <Logger name="org.hibernate" level="warn" additivity="false">
+            <AppenderRef ref="FILE" />
+        </Logger>
+        <Root level="all">
+            <AppenderRef ref="FILE" />
+        </Root>
+    </Loggers>
+</Configuration>

@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
  * Tools for parsing vmstat output
  */
 public class VMStatParser {
-    private static final Logger log = LogManager.getLogger("net.blackshard.clarity.scribe");
+    private static final Logger log = LogManager.getLogger(VMStatParser.class);
 
     private HashMap<VMStatField, Integer> stats;
     private VMStatField fieldNames[];

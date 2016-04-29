@@ -13,8 +13,7 @@ import org.apache.logging.log4j.LogManager;
  * Scribblet to log basic CPU activity.
  */
 public class CPUScribblet implements Runnable {
-    private static final Logger log
-            = LogManager.getLogger("net.blackshard.clarity.scribe");
+    private static final Logger log = LogManager.getLogger(CPUScribblet.class);
 
     String name = "CPU Scribblet";
     Map<VMStatField, Integer> stats;

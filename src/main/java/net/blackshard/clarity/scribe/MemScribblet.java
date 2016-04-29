@@ -13,8 +13,7 @@ import org.apache.logging.log4j.LogManager;
  * Scribblet to log basic memory status.
  */
 public class MemScribblet implements Runnable {
-    private static final Logger log
-            = LogManager.getLogger("net.blackshard.clarity.scribe");
+    private static final Logger log = LogManager.getLogger(MemScribblet.class);
 
     String name = "Memory Scribblet";
     Map<VMStatField, Integer> stats;

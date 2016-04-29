@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" strict="true" name="Scribe">
+    <Properties>
+        <Property name="logdir">target</Property>
+    </Properties>
+    <Appenders>
+        <Appender type="Console" name="STDOUT" target="SYSTEM_OUT">
+            <Layout type="PatternLayout"
+                    pattern="%d %-4r [%t] %-5p %c %x - %m%n" />
+        </Appender>
+        <!--
+        <Appender type="File" name="FILETRACE" append="false"
+                fileName="${logdir}/scribe-trace.log">
+            <Layout type="PatternLayout" pattern="%d %p %l [%t] %m%n" />
+        </Appender>
+        -->
+        <Appender type="RollingFile" name="ROLLING"
+                fileName="${logdir}/scribe.log"
+                filePattern="${logdir}/scribe-%d{yyyy-MM}-%i.log.gz">
+            <Layout type="PatternLayout" pattern="%d %p %m%n" />
+            <Policies>
+                <Policy type="TimeBasedTriggeringPolicy"
+                        interval="2" modulate="true" />
+                <Policy type="SizeBasedTriggeringPolicy" size="100MB" />
+            </Policies>
+        </Appender>
+    </Appenders>
+    <Loggers>
+        <Logger name="net.blackshard.clarity" level="trace" />
+        <Logger name="org.hibernate" level="warn" additivity="false">
+            <AppenderRef ref="ROLLING" />
+        </Logger>
+        <Root level="warn">
+            <AppenderRef ref="ROLLING" />
+        </Root>
+    </Loggers>
+</Configuration>
