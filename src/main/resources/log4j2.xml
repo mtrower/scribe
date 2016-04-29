@@ -26,7 +26,7 @@
         </Appender>
     </Appenders>
     <Loggers>
-        <Logger name="net.blackshard.clarity" level="trace" />
+        <Logger name="net.blackshard.clarity" level="warn" />
         <Logger name="org.hibernate" level="warn" additivity="false">
             <AppenderRef ref="ROLLING" />
         </Logger>
