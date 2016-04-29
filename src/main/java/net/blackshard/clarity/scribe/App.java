@@ -1,10 +1,14 @@
 package net.blackshard.clarity.scribe;
 
-import java.util.List;
-import java.util.ArrayList;
+import net.blackshard.clarity.tome.Library;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Matthew R. Trower
@@ -19,6 +23,8 @@ public class App {
     static {
         log.info("Driver: initializing...");
 
+        Library.open();
+
         scribblets = new ArrayList();
         scribblets.add(new CPUScribblet());
         scribblets.add(new MemScribblet());
@@ -29,9 +35,21 @@ public class App {
     public static void main( String[] args ) {
         log.info("Driver: launching scribblets...");
 
-        for (Runnable scribblet: scribblets)
-            (new Thread(scribblet)).start();
+        for (Runnable r: scribblets) {
+            Thread t = new Thread(r);
+            threads.add(t);
+            t.start();
+        }
 
         log.info("Driver: all scribblets launched");
+
+        try {
+            for (Thread t: threads)
+                t.join();
+        } catch (InterruptedException ie) { }
+
+        log.info("Driver: cleaning up");
+
+        Library.close();
     }
 }

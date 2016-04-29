@@ -1,6 +1,9 @@
 package net.blackshard.clarity.scribe;
+import net.blackshard.clarity.tome.CPUReading;
+import net.blackshard.clarity.tome.ReadingDAOHibernate;
 
 import java.io.*;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
@@ -14,9 +17,11 @@ import org.apache.logging.log4j.LogManager;
  */
 public class CPUScribblet implements Runnable {
     private static final Logger log = LogManager.getLogger(CPUScribblet.class);
+    private static ReadingDAOHibernate dao
+            = new ReadingDAOHibernate<CPUReading>();
 
     String name = "CPU Scribblet";
-    Map<VMStatField, Integer> stats;
+    CPUReading reading;
 
     Gatherer gatherer;
     VMStatParser parser;
@@ -52,18 +57,27 @@ public class CPUScribblet implements Runnable {
     private void gatherStats() throws IOException {
         parser.parse(gatherer.read());
 
+        Map<VMStatField, Integer> stats;
         stats = parser.getStats(new VMStatField[] {
             VMStatField.CPU_USER
             , VMStatField.CPU_SYS
             , VMStatField.CPU_IDLE
         });
+
+        reading = new CPUReading(0, new Date()
+                , stats.get(VMStatField.CPU_USER)
+                , stats.get(VMStatField.CPU_SYS)
+                , stats.get(VMStatField.CPU_IDLE)
+        );
     }
 
     private void writeStats() throws IOException {
+        dao.insert(reading);
+
         log.debug(String.format("%s: user %d \tsystem %d \t idle %d", name
-                                , stats.get(VMStatField.CPU_USER)
-                                , stats.get(VMStatField.CPU_SYS)
-                                , stats.get(VMStatField.CPU_IDLE)
+                                , reading.getMetricUser()
+                                , reading.getMetricSystem()
+                                , reading.getMetricIdle()
         ));
     }
 }

@@ -1,6 +1,9 @@
 package net.blackshard.clarity.scribe;
+import net.blackshard.clarity.tome.MemReading;
+import net.blackshard.clarity.tome.ReadingDAOHibernate;
 
 import java.io.*;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
@@ -14,9 +17,11 @@ import org.apache.logging.log4j.LogManager;
  */
 public class MemScribblet implements Runnable {
     private static final Logger log = LogManager.getLogger(MemScribblet.class);
+    private static ReadingDAOHibernate dao
+            = new ReadingDAOHibernate<MemReading>();
 
     String name = "Memory Scribblet";
-    Map<VMStatField, Integer> stats;
+    MemReading reading;
 
     Gatherer gatherer;
     VMStatParser parser;
@@ -52,16 +57,24 @@ public class MemScribblet implements Runnable {
     private void gatherStats() throws IOException {
         parser.parse(gatherer.read());
 
+        Map<VMStatField, Integer> stats;
         stats = parser.getStats(new VMStatField[] {
               VMStatField.MEM_SWAP
             , VMStatField.MEM_FREE
         });
+
+        reading = new MemReading(0, new Date()
+                , stats.get(VMStatField.MEM_SWAP)
+                , stats.get(VMStatField.MEM_FREE)
+        );
     }
 
     private void writeStats() throws IOException {
-        log.debug(String.format("%s: total swap %d \tfree %d", name
-                                , stats.get(VMStatField.MEM_SWAP)
-                                , stats.get(VMStatField.MEM_FREE)
+        dao.insert(reading);
+
+        log.debug(String.format("%s: swap %d \tfree %d", name
+                                , reading.getMetricSwap()
+                                , reading.getMetricFree()
         ));
     }
 }
