@@ -2,12 +2,13 @@ package net.blackshard.clarity.scribe;
 import net.blackshard.clarity.tome.MemReading;
 import net.blackshard.clarity.tome.ReadingDAOHibernate;
 
-import java.io.*;
-import java.util.Date;
-import java.util.Map;
-
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+
+import java.io.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Matthew R. Trower
@@ -15,69 +16,27 @@ import org.apache.logging.log4j.LogManager;
  * 
  * Scribblet to log basic memory status.
  */
-public class MemScribblet implements Runnable {
-    private static final Logger log = LogManager.getLogger(MemScribblet.class);
-    private static ReadingDAOHibernate dao
-            = new ReadingDAOHibernate<MemReading>();
-
-    String name = "Memory Scribblet";
-    MemReading reading;
-
-    Gatherer gatherer;
-    VMStatParser parser;
-
+public class MemScribblet extends VMStatScribblet {
     public MemScribblet() {
-        gatherer = new VMStatGatherer();
-        parser = new VMStatParser();
+        log = LogManager.getLogger(MemScribblet.class);
+        dao = new ReadingDAOHibernate<MemReading>();
+        fields = new VMStatField[] {
+                  VMStatField.MEM_SWAP
+                , VMStatField.MEM_FREE
+        };
+
+        name = "Memory Scribblet";
+        reading = new MemReading();
     }
 
-    public void run() {
-        log.info(name + ": starting up!");
+    protected LinkedHashMap<String, Integer>
+            toMetricsMap(Map<VMStatField, Integer> stats) {
 
-        while (true)
-            try { 
-                gatherer.open();
+        LinkedHashMap<String, Integer> metrics = new LinkedHashMap();
 
-                log.trace(name + ": tick");
+        metrics.put("swap", stats.get(VMStatField.MEM_SWAP));
+        metrics.put("free", stats.get(VMStatField.MEM_FREE));
 
-                gatherStats();
-                writeStats();
-
-                Thread.sleep(1000);
-            } catch (InterruptedException ie) {
-                break;
-            } catch (Exception e) {
-                log.error("", e);
-                gatherer.close();
-            }
-
-
-        log.info(name + ": shutting down!");
-
-        gatherer.close();
-    }
-
-    private void gatherStats() throws IOException {
-        parser.parse(gatherer.read());
-
-        Map<VMStatField, Integer> stats;
-        stats = parser.getStats(new VMStatField[] {
-              VMStatField.MEM_SWAP
-            , VMStatField.MEM_FREE
-        });
-
-        reading = new MemReading(0, new Date()
-                , stats.get(VMStatField.MEM_SWAP)
-                , stats.get(VMStatField.MEM_FREE)
-        );
-    }
-
-    private void writeStats() throws IOException {
-        dao.insert(reading);
-
-        log.debug(String.format("%s: swap %d \tfree %d", name
-                                , reading.getMetricSwap()
-                                , reading.getMetricFree()
-        ));
+        return metrics;
     }
 }

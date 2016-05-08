@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.*;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -15,71 +16,29 @@ import java.util.Map;
  * 
  * Scribblet to log basic CPU activity.
  */
-public class CPUScribblet implements Runnable {
-    private static final Logger log = LogManager.getLogger(CPUScribblet.class);
-    private static ReadingDAOHibernate dao
-            = new ReadingDAOHibernate<CPUReading>();
-
-    String name = "CPU Scribblet";
-    CPUReading reading;
-
-    Gatherer gatherer;
-    VMStatParser parser;
-
+public class CPUScribblet extends VMStatScribblet {
     public CPUScribblet() {
-        gatherer = new VMStatGatherer();
-        parser = new VMStatParser();
+        log = LogManager.getLogger(CPUScribblet.class);
+        dao = new ReadingDAOHibernate<CPUReading>();
+        fields = new VMStatField[] {
+                  VMStatField.CPU_USER
+                , VMStatField.CPU_SYS
+                , VMStatField.CPU_IDLE
+        };
+
+        name = "CPU Scribblet";
+        reading = new CPUReading();
     }
 
-    public void run() {
-        log.info(name + ": starting up!");
+    protected LinkedHashMap<String, Integer>
+            toMetricsMap(Map<VMStatField, Integer> stats) {
 
-        while (true)
-            try { 
-                gatherer.open();
+        LinkedHashMap<String, Integer> metrics = new LinkedHashMap();
 
-                log.trace(name + ": tick");
+        metrics.put("user", stats.get(VMStatField.CPU_USER));
+        metrics.put("system", stats.get(VMStatField.CPU_SYS));
+        metrics.put("idle", stats.get(VMStatField.CPU_IDLE));
 
-                gatherStats();
-                writeStats();
-
-                Thread.sleep(1000);
-            } catch (InterruptedException ie) {
-                break;
-            } catch (Exception e) {
-                log.error("", e);
-                gatherer.close();
-            }
-
-        log.info(name + ": shutting down!");
-
-        gatherer.close();
-    }
-
-    private void gatherStats() throws IOException {
-        parser.parse(gatherer.read());
-
-        Map<VMStatField, Integer> stats;
-        stats = parser.getStats(new VMStatField[] {
-            VMStatField.CPU_USER
-            , VMStatField.CPU_SYS
-            , VMStatField.CPU_IDLE
-        });
-
-        reading = new CPUReading(0, new Date()
-                , stats.get(VMStatField.CPU_USER)
-                , stats.get(VMStatField.CPU_SYS)
-                , stats.get(VMStatField.CPU_IDLE)
-        );
-    }
-
-    private void writeStats() throws IOException {
-        dao.insert(reading);
-
-        log.debug(String.format("%s: user %d \tsystem %d \t idle %d", name
-                                , reading.getMetricUser()
-                                , reading.getMetricSystem()
-                                , reading.getMetricIdle()
-        ));
+        return metrics;
     }
 }
