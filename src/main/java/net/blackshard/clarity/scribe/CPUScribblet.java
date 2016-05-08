@@ -37,7 +37,7 @@ public class CPUScribblet implements Runnable {
         try { 
             gatherer.open();
 
-            for (int i = 0; i < 5; i++) {
+            while (true) {
                 log.trace(name + ": tick");
 
                 gatherStats();
