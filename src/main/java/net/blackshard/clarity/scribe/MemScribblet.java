@@ -45,9 +45,11 @@ public class MemScribblet implements Runnable {
 
                 Thread.sleep(1000);
             }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (InterruptedException ie) { }
+        } catch (InterruptedException ie) {
+        } catch (Exception e) {
+            log.error("", e);
+        }
+
 
         log.info(name + ": shutting down!");
 

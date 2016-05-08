@@ -2,12 +2,12 @@ package net.blackshard.clarity.scribe;
 import net.blackshard.clarity.tome.CPUReading;
 import net.blackshard.clarity.tome.ReadingDAOHibernate;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import java.io.*;
 import java.util.Date;
 import java.util.Map;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 /**
  * @author Matthew R. Trower
@@ -45,9 +45,10 @@ public class CPUScribblet implements Runnable {
 
                 Thread.sleep(1000);
             } 
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (InterruptedException ie) { }
+        } catch (InterruptedException ie) {
+        } catch (Exception e) {
+            log.error("", e);
+        }
 
         log.info(name + ": shutting down!");
 

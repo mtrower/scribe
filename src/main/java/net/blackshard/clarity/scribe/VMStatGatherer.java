@@ -1,5 +1,8 @@
 package net.blackshard.clarity.scribe;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -11,6 +14,8 @@ import java.io.IOException;
  * Gather system data from the vmstat(1M) command.
  */
 public class VMStatGatherer implements Gatherer {
+    private static final Logger log = LogManager.getLogger(VMStatGatherer.class);
+
     Process proc;
     BufferedReader pin;
 
@@ -33,7 +38,7 @@ public class VMStatGatherer implements Gatherer {
 
     public void close() {
         try { pin.close(); }
-        catch (IOException ioe) { ioe.printStackTrace(); }
+        catch (IOException ioe) { log.error("", ioe); }
 
         proc.destroy();
     }
