@@ -34,21 +34,22 @@ public class MemScribblet implements Runnable {
     public void run() {
         log.info(name + ": starting up!");
 
-        try {
-            gatherer.open();
+        while (true)
+            try { 
+                gatherer.open();
 
-            while (true) {
                 log.trace(name + ": tick");
 
                 gatherStats();
                 writeStats();
 
                 Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+                break;
+            } catch (Exception e) {
+                log.error("", e);
+                gatherer.close();
             }
-        } catch (InterruptedException ie) {
-        } catch (Exception e) {
-            log.error("", e);
-        }
 
 
         log.info(name + ": shutting down!");
