@@ -13,6 +13,11 @@ import org.apache.logging.log4j.LogManager;
  */
 public class VMStatParser {
     private static final Logger log = LogManager.getLogger(VMStatParser.class);
+    private static final String HEADER_REGEX = " kthr.*| r b w.*";
+
+    public static boolean isHeader(String line) {
+        return line.matches(HEADER_REGEX);
+    }
 
     private HashMap<VMStatField, Integer> stats;
     private VMStatField fieldNames[];

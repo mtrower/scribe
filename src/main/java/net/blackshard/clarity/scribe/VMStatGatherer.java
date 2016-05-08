@@ -18,13 +18,17 @@ public class VMStatGatherer implements Gatherer {
         proc = Runtime.getRuntime().exec("vmstat 1");
         pin = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
-        // Throw away header and summary data
-        for (int i = 0; i < 3; i++)
-            pin.readLine();
+        // Throw away summary data
+        read();
     }
 
     public String read() throws IOException {
-        return pin.readLine();
+        String line = null;
+
+        do { line = pin.readLine(); }
+        while (VMStatParser.isHeader(line));
+
+        return line;
     }
 
     public void close() {

@@ -24,6 +24,15 @@ public class VMStatParserTest {
         parser = new VMStatParser();
     }
 
+    @Test public void shouldIdentifyHeaderFragments() {
+        assertTrue(VMStatParser.isHeader(" kthr      memory"));
+        assertTrue(VMStatParser.isHeader(" r b w   swap  free"));
+    }
+
+    @Test public void shouldNotFalselyIdentifyHeaderFragments() {
+        assertFalse(VMStatParser.isHeader(" 0 0 0 11112092 10540236"));
+    }
+
     @Test public void shouldRefuseEmptyString() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Can't parse an empty string!");
@@ -49,7 +58,6 @@ public class VMStatParserTest {
     @Test public void shouldRefuseNonIntegerFields() {
         exception.expect(NumberFormatException.class);
         parser.parse("0 0 0 cdc 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
-        
     }
 
     @Test public void fieldsAreSetProperly() {
