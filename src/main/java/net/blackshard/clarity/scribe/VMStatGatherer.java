@@ -16,10 +16,13 @@ import java.io.IOException;
 public class VMStatGatherer implements Gatherer {
     private static final Logger log = LogManager.getLogger(VMStatGatherer.class);
 
-    Process proc;
-    BufferedReader pin;
+    private Process proc;
+    private BufferedReader pin;
 
     public void open() throws IOException {
+        if (proc != null)
+            return;
+
         proc = Runtime.getRuntime().exec("vmstat 1");
         pin = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
@@ -41,5 +44,6 @@ public class VMStatGatherer implements Gatherer {
         catch (IOException ioe) { log.error("", ioe); }
 
         proc.destroy();
+        proc = null;
     }
 }
